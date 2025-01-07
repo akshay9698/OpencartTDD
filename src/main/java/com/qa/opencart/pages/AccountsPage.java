@@ -43,6 +43,10 @@ public class AccountsPage {
 		return eleUtil.waitForElementVisible(logoutLink, AppConstants.DEFAULT_MEDIUM_TIME_OUT).isDisplayed();
 	}
 
+	public boolean isSearchExist() {
+		return eleUtil.waitForElementVisible(search, AppConstants.DEFAULT_MEDIUM_TIME_OUT).isDisplayed();
+	}
+
 	public List<String> getAccountsPageHeaderList() {
 		List<WebElement> headers = eleUtil.waitForElementsVisible(accHeaders, AppConstants.DEFAULT_MEDIUM_TIME_OUT);
 		List<String> accHeadersList = new ArrayList<String>();
@@ -52,6 +56,16 @@ public class AccountsPage {
 			accHeadersList.add(accHeaders);
 		}
 		return accHeadersList;
+	}
+
+	public SearchPage performSearch(String product) {
+		if (isSearchExist()) {
+			eleUtil.doSendKeys(search, product);
+			eleUtil.doClick(searchIcn);
+			return new SearchPage(driver);
+		}
+		System.out.println("The Search field is not present on the page...");
+		return null;
 	}
 
 }
