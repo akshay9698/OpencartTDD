@@ -18,23 +18,25 @@ public class DriverFactory {
 
 	WebDriver driver;
 	Properties prop;
+	public OptionsManager optionsManager;
 	public static String highlight;
 	public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
 
 	public WebDriver initDriver(Properties prop) {
-
+		optionsManager = new OptionsManager(prop);
+		highlight = prop.getProperty("highlight");
 		String browserName = prop.getProperty("browser").toLowerCase().trim();
 		System.out.println("Browser name is: " + browserName);
 
 		if (browserName.equalsIgnoreCase("chrome")) {
 			// driver = new ChromeDriver();
-			tlDriver.set(new ChromeDriver());
+			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
 		} else if (browserName.equalsIgnoreCase("edge")) {
 			// driver = new EdgeDriver();
-			tlDriver.set(new EdgeDriver());
+			tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
 		} else if (browserName.equalsIgnoreCase("firefox")) {
 			// driver = new FirefoxDriver();
-			tlDriver.set(new FirefoxDriver());
+			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
 		} else {
 			System.out.println("Please enter correct browser name: " + browserName);
 		}
